@@ -40,8 +40,18 @@ with tab1:
             # show frames with detected movement
             if movement_indices:
                 st.subheader("Frames with Movement")
-                for idx in movement_indices:
+                
+                # showing first 5 frames initially
+                initial_frames_to_show = min(5, len(movement_indices))
+                for idx in movement_indices[:initial_frames_to_show]:
                     st.image(frames[idx], caption=f"Movement at frame {idx}", use_column_width=True)
+                
+                # "Show more..." button
+                if len(movement_indices) > 5:
+                    if st.button("Show more...", key="images_show_more"):
+                        st.subheader("Additional Frames with Movement")
+                        for idx in movement_indices[5:]:
+                            st.image(frames[idx], caption=f"Movement at frame {idx}", use_column_width=True)
             else:
                 st.info("No movement detected.")
         else:
@@ -96,9 +106,18 @@ with tab2:
                         st.write(f"Movement detected in {len(movement_indices)}/{len(frames)} frames ({movement_percentage:.1f}%)")
 
                         st.subheader("Frames with Movement")
-                        # show first 3 frames
-                        for i, idx in enumerate(movement_indices[:3]):
+                        
+                        # showing first 5 frames initially
+                        initial_frames_to_show = min(5, len(movement_indices))
+                        for i, idx in enumerate(movement_indices[:initial_frames_to_show]):
                             st.image(frames[idx], caption=f"Frame {idx} - Movement detected")
+                        
+                        # "Show more..." button
+                        if len(movement_indices) > 5:
+                            if st.button("Show more..."):
+                                st.subheader("Additional Frames with Movement")
+                                for i, idx in enumerate(movement_indices[5:], start=5):
+                                    st.image(frames[idx], caption=f"Frame {idx} - Movement detected")
                 
                     else:
                         st.info("No movement detected.")
