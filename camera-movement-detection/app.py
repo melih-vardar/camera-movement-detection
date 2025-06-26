@@ -69,29 +69,29 @@ with tab2:
 
         try:
             # extracting frames
-            st.write("Processing video...")
-            cap = cv2.VideoCapture(video_path)
-            frames = []
-            frame_count = 0
+            with st.spinner("Processing video..."):
+                cap = cv2.VideoCapture(video_path)
+                frames = []
+                frame_count = 0
 
-            total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
-            # processing frames at certain intervals
-            frame_step = max(1, total_frames // 50)
+                total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+                # processing frames at certain intervals
+                frame_step = max(1, total_frames // 50)
 
-            while True:
-                ret, frame = cap.read()
-                if not ret:
-                    break
+                while True:
+                    ret, frame = cap.read()
+                    if not ret:
+                        break
 
-                # frame step control
-                if frame_count % frame_step == 0:
-                    # BGR --> RGB (opencv to streamlit format)
-                    frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-                    frames.append(frame_rgb)
+                    # frame step control
+                    if frame_count % frame_step == 0:
+                        # BGR --> RGB (opencv to streamlit format)
+                        frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+                        frames.append(frame_rgb)
 
-                frame_count += 1
-            
-            cap.release()
+                    frame_count += 1
+                
+                cap.release()
 
             if frames:
                 st.write(f"Extracted {len(frames)} frames.")
